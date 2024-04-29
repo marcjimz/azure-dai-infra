@@ -5,7 +5,7 @@ declare -A params
 
 # Define paths to the ARM template and parameters file
 templateFile="azuredeploy.json"
-parametersFile="parameters.json"
+parametersFile="azuredeploy.parameters.json"
 
 # Usage function
 usage() {
