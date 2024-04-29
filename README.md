@@ -23,7 +23,7 @@ The repository is organized into the following folders:
 - `synapse`: Contains ARM templates for provisioning Azure Synapse resources.
 - `databricks`: Contains ARM templates for provisioning Azure Databricks resources.
 
-Feel free to explore each folder to find the templates that suit your needs.
+Feel free to explore each folder to find the templates that suit your needs. Many of the sources have been initialized sourcing templates from the [Azure Samples](https://github.com/Azure-Samples) repository.
 
 ## Contributing
 

@@ -46,13 +46,40 @@ The template is sourced from the `Azure-Samples` [repository](https://github.com
    - **Review and Create**: Select.
    - **Create**: Select.
 
-2. Run the following command to initialize the deployment:
+2. Set the subscription ID as follows:
 
 ```sh
-./deploy.sh -d /path/to/resource -s YourSubscriptionId -g YourResourceGroupName -l "Central US" -n YourWorkspaceName -u YourSQLAdminUsername -p YourSQLAdminPassword
+az account set --subscription <SUBSCRIPTION_ID>
 ```
 
-3. Additional permissions are required. The attached script can be used to add a user to the contributor role of the workspace. Assign other users the appropriate **[Synapse RBAC roles](security/synapse-workspace-synapse-rbac-roles.md)** using Synapse Studio (via the UI).
+3. Set and run the following command to initialize the parameters:
+
+```sh
+# Change these values before execution.
+export RESOURCE_GROUP="dev-synapse"
+export REGION="West US"
+export WORKSPACE_NAME="synapse-poc-demo"
+export SQL_USERNAME="admin"
+export SQL_PASSWORD="password"
+export STORAGE_ACCOUNT_NAME="synapse-demo"
+```
+
+4. If necessary, create the resource group to land the resource in as required:
+
+```sh
+region_formatted="${REGION,,}"  # Convert to lowercase
+region_formatted="${region_formatted// /}"  # Remove spaces
+az group create --name $RESOURCE_GROUP --location $region_formatted --tags Environment=Dev Project=SynapseDemo
+```
+
+5. Run the following command to initialize the deployment:
+
+```sh
+chmod +x ../deploy.sh
+../deploy.sh ResourceGroupName="$RESOURCE_GROUP" name="$WORKSPACE_NAME" sqlAdministratorLogin="$SQL_USERNAME" sqlAdministratorPassword="$SQL_PASSWORD" defaultDataLakeStorageAccountName="$STORAGE_ACCOUNT_NAME"
+```
+
+6. Additional permissions are required. The attached script can be used to add a user to the contributor role of the workspace. Assign other users the appropriate **[Synapse RBAC roles](security/synapse-workspace-synapse-rbac-roles.md)** using Synapse Studio (via the UI).
 
 4. A member of the **Owner** role of the Azure Storage account must assign the **Storage Blob Data Contributor** role to the Azure Synapse workspace MSI and other users.
 
