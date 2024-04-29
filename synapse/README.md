@@ -33,10 +33,11 @@ az provider register --namespace Microsoft.Sql
 
 ## Review the template
 
-The template is sourced from the `Azure-Samples` [repository](https://github.com/Azure-Samples/Synapse/blob/main/Manage/DeployWorkspace/workspace/azuredeploy.json). The template defines two resources:
+The template is sourced from the **AzureSynapseEndToEndDemo** [repository](https://github.com/microsoft/AzureSynapseEndToEndDemo/tree/main/ARMTemplate). The template defines resources:
 
 - Storage account
 - Workspace
+- Spark Pools
 
 ## Parameters
 
