@@ -4,8 +4,9 @@
 declare -A params
 
 # Define paths to the ARM template and parameters file
-templateFile="azuredeploy.json"
+#templateFile="azuredeploy.json"
 parametersFile="azuredeploy.parameters.json"
+templateUri="https://raw.githubusercontent.com/marcjimz/azure-dai-infra/main/synapse/azuredeploy.json"
 
 # Usage function
 usage() {
@@ -87,7 +88,7 @@ esac
 az deployment group create \
     --name exampleDeployment \
     --resource-group ${params[ResourceGroupName]} \
-    --template-file $templateFile \
+    --template-uri  $templateUri \
     --parameters @$tempParametersFile
 
 # Clean up the temporary parameters file

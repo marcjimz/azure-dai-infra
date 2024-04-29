@@ -80,7 +80,7 @@ export REGION="West US"
 export WORKSPACE_NAME="synapse-poc-demo"
 export SQL_USERNAME="admin"
 export SQL_PASSWORD="password"
-export STORAGE_ACCOUNT_NAME="synapse-demo"
+export STORAGE_ACCOUNT_NAME="synapsedemopoc"
 ```
 
 4. If necessary, create the resource group to land the resource in as required:
@@ -100,9 +100,7 @@ chmod +x ../deploy.sh
 
 Work through any validation errors that come up from the deployment utility.
 
-6. Additional permissions are required. Assign other users the appropriate **[Synapse RBAC roles](security/synapse-workspace-synapse-rbac-roles.md)** using Synapse Studio (via the UI).
-
-4. A member of the **Owner** role of the Azure Storage account must assign the **Storage Blob Data Contributor** role to the Azure Synapse workspace MSI and other users.
+6. Additional permissions are required. Assign other users the appropriate **[Synapse RBAC roles](security/synapse-workspace-synapse-rbac-roles.md)** using Synapse Studio (via the UI). A member of the **Owner** role of the Azure Storage account must assign the **Storage Blob Data Contributor** role to the Azure Synapse workspace MSI and other users.
 
 ## Next steps
 
