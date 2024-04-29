@@ -25,6 +25,12 @@ To create an Azure Synapse workspace, a user must have **Azure Contributor** rol
 
 Azure CLI must also be installed and configured to the same active subscription.
 
+The subscription must also be registed with Azure SQL. To do so you can run:
+
+```sh
+az provider register --namespace Microsoft.Sql
+```
+
 ## Review the template
 
 The template is sourced from the `Azure-Samples` [repository](https://github.com/Azure-Samples/Synapse/blob/main/Manage/DeployWorkspace/workspace/azuredeploy.json). The template defines two resources:
@@ -78,6 +84,8 @@ az group create --name $RESOURCE_GROUP --location $region_formatted --tags Envir
 chmod +x ../deploy.sh
 ../deploy.sh ResourceGroupName="$RESOURCE_GROUP" name="$WORKSPACE_NAME" sqlAdministratorLogin="$SQL_USERNAME" sqlAdministratorPassword="$SQL_PASSWORD" defaultDataLakeStorageAccountName="$STORAGE_ACCOUNT_NAME"
 ```
+
+Work through any validation errors that come up from the deployment utility.
 
 6. Additional permissions are required. The attached script can be used to add a user to the contributor role of the workspace. Assign other users the appropriate **[Synapse RBAC roles](security/synapse-workspace-synapse-rbac-roles.md)** using Synapse Studio (via the UI).
 
