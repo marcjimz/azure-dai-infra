@@ -41,30 +41,24 @@ The template is sourced from the **AzureSynapseEndToEndDemo** [repository](https
 
 ## Parameters
 
-| name | required | description |
---- | --- | ---
-| Name | yes | A name to use for your new Azure Synapse workspace and Data Lake Storage account |
-| Storage | no | A name of the underlying Azure Data Lake storage. Use one storage account for multiple workspaces in the region. See [naming restrictions](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftdatalakestore). If not provided, the workspace name will be used. |
-| Sql Administrator Login | yes | SQL administrator login name that will access SQL endpoint. |
-| Sql Administrator Password | yes | SQL administrator login password for accessing SQL endpoint. |
-| Tag Values | no | Resource tags |
-| CMK Uri | no | Customer-managed key uri from Key Vault for double encryption |
-
-NOTE: If you want to provide a customer-managed key (CMK) from Key Vault for double encryption, you can get the uri from the portal. See [here](https://docs.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal#retrieve-a-secret-from-key-vault) for details on how to get the uri from Key Vault and [here](https://docs.microsoft.com/en-us/azure/synapse-analytics/security/workspaces-encryption) for more information on encryption in Azure Synapse in general.
+| Name                            | Required | Description                                                                                                   |
+|---------------------------------|----------|---------------------------------------------------------------------------------------------------------------|
+| StorageAcccountName             | yes      | Name of the Storage Account.                                                                                  |
+| StorageContainerName            | yes      | Name of the Container in Storage Account.                                                                     |
+| WorkspaceName                   | yes      | Name of the Synapse Workspace.                                                                                |
+| ManagedResourceGroupName        | yes      | Name of the Managed Resource Group for Synapse.                                                               |
+| SqlPoolName                     | yes      | Name of the dedicated SQL pool.                                                                               |
+| SparkPoolName                   | yes      | Name of the Synapse spark pool. Maximum length of 15 characters.                                              |
+| sqlAdministratorLogin           | yes      | The username of the SQL Administrator.                                                                        |
+| sqlAdministratorLoginPassword   | yes      | The password for the SQL Administrator. This is a secure string.                                              |
+| githubUsername                  | yes      | Username of your github account hosting synapse workspace resources.                                          |
+| sparkNodeSize                   | no       | Size of the node if SparkDeployment is true. Defaults to 'Small'. Allowed values: 'Small', 'Medium', 'Large'. |
+| metadataSync                    | no       | Choose whether you want to synchronize metadata. Defaults to true.                                            |
+| sku                             | no       | Select the SKU of the SQL pool. Defaults to 'DW100c'. Allowed values range from 'DW100c' to 'DW3000c'.        |
 
 ## Deploy the template
 
-1. Configure the parameters as properly, updating the following values:
-
-   - **Subscription**: Select an Azure subscription.
-   - **Resource group**: Select **Create new** and enter a unique name for the resource group and select **OK**. A new resource group will facilitate resource clean up.
-   - **Region**: Select a region.  For example, **Central US**.
-   - **Name**: Enter a name for your workspace.
-   - **SQL Administrator login**: Enter the administrator username for the SQL Server.
-   - **SQL Administrator password**: Enter the administrator password for the SQL Server.
-   - **Tag Values**: Accept the default.
-   - **Review and Create**: Select.
-   - **Create**: Select.
+1. Configure the parameters as properly, updating the values as required.
 
 2. Set the subscription ID as follows:
 
@@ -77,11 +71,16 @@ az account set --subscription <SUBSCRIPTION_ID>
 ```sh
 # Change these values before execution.
 export RESOURCE_GROUP="dev-synapse"
+export RESOURCE_GROUP_MNGD="dev-synapse-mgd"
 export REGION="West US"
 export WORKSPACE_NAME="synapse-poc-demo"
 export SQL_USERNAME="admin"
 export SQL_PASSWORD="password"
 export STORAGE_ACCOUNT_NAME="synapsedemopoc"
+export STORAGE_CONTAINER_NAME="synapse"
+export SQL_POOL_NAME="sqlpoolpoc"
+export SPARK_POOL_NAME="sparkpoolpoc"
+export GITHUB_USERNAME="marcjimz"
 ```
 
 4. If necessary, create the resource group to land the resource in as required:
@@ -96,10 +95,20 @@ az group create --name $RESOURCE_GROUP --location $region_formatted --tags Envir
 
 ```sh
 chmod +x ../deploy.sh
-../deploy.sh ResourceGroupName="$RESOURCE_GROUP" workspaceName="$WORKSPACE_NAME" sqlAdministratorLogin="$SQL_USERNAME" sqlAdministratorPassword="$SQL_PASSWORD" storageAccountName="$STORAGE_ACCOUNT_NAME"
+../deploy.sh synapse \
+    ResourceGroupName="$RESOURCE_GROUP" \
+    WorkspaceName="$WORKSPACE_NAME" \
+    sqlAdministratorLogin="$SQL_USERNAME" \
+    sqlAdministratorLoginPassword="$SQL_PASSWORD" \
+    StorageAcccountName="$STORAGE_ACCOUNT_NAME" \
+    StorageContainerName="$STORAGE_CONTAINER_NAME" \
+    SqlPoolName="$SQL_POOL_NAME" \
+    SparkPoolName="$SPARK_POOL_NAME" \
+    githubUsername="$GITHUB_USERNAME" \
+    ManagedResourceGroupName="$RESOURCE_GROUP_MNGD"
 ```
 
-Work through any validation errors that come up from the deployment utility.
+Work through any validation errors that come up from the deployment.
 
 6. Additional permissions are required. Assign other users the appropriate **[Synapse RBAC roles](security/synapse-workspace-synapse-rbac-roles.md)** using Synapse Studio (via the UI). A member of the **Owner** role of the Azure Storage account must assign the **Storage Blob Data Contributor** role to the Azure Synapse workspace MSI and other users.
 
@@ -111,4 +120,6 @@ To learn more about Azure Synapse Analytics and Azure Resource Manager,
 - Learn more about [Azure Resource Manager](../azure-resource-manager/management/overview.md)
 - [Create and deploy your first ARM template](../azure-resource-manager/templates/template-tutorial-create-first-template.md)
 
-Next, you can [create SQL pools](quickstart-create-sql-pool-studio.md) or [create Apache Spark pools](quickstart-create-apache-spark-pool-studio.md) to start analyzing and exploring your data.
+Next, you can [create SQL pools](quickstart-create-sql-pool-studio.md) or [create Apache Spark pools](quickstart-create-apache-spark-pool-studio.md) to start analyzing and exploring your data. 
+
+Finally, you can follow the complete [end to end demo](https://github.com/microsoft/AzureSynapseEndToEndDemo/tree/main).

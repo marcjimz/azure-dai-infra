@@ -2,23 +2,41 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "ManagedResourceGroupName": {
+            "value": "YourManagedResourceGroupName"
+        },
+        "MetadataSync": {
+            "value": false
+        },
+        "SparkNodeSize": {
+            "value": "Small"
+        },
+        "SparkPoolName": {
+            "value": "YourSparkPoolName"
+        },
+        "sqlAdministratorLogin": {
+            "value": "YourSQLAdminUsername"
+        },
+        "sqlAdministratorLoginPassword": {
+            "value": "YourSQLAdminPassword"
+        },
+        "SqlPoolName": {
+            "value": "YourSqlPoolName"
+        },
+        "Sku": {
+            "value": "DW100c"
+        },
+        "StorageAcccountName": {
+            "value": "YourStorageAccountName"
+        },
+        "StorageContainerName": {
+            "value": "YourStorageContainerName"
+        },
         "WorkspaceName": {
             "value": "YourWorkspaceName"
         },
-        "sparkNodeSize": {
-            "value": "Small"
-        },
-        "sqlAdministratorLogin": {
-            "value": "YourSQLAdminPassword"
-        },
-        "sqlAdministratorLoginPassword": {
-            "value": "YourDataLakeStorageAccountName"
-        },
-        "sku": {
-            "value": "DW100c"
-        },
-        "metadataSync" : {
-            "value": "true"
+        "githubUsername": {
+            "value": "YourGithubUsername"
         }
     }
-  }
+}

@@ -3,15 +3,26 @@
 # Initialize associative array for parameters
 declare -A params
 
+# Check if at least one argument is provided
+if [ $# -eq 0 ]; then
+    echo "No module specified."
+    echo "Usage: $0 <module> key1=value1 key2=value2 ... keyN=valueN"
+    echo "Example: $0 synapse ResourceFolder=/path/to/folder SubscriptionId=example-id ResourceGroupName=my-group"
+    exit 1
+fi
+
+# Define module and build the template URI
+module=$1
+baseUri="https://raw.githubusercontent.com/marcjimz/azure-dai-infra/main"
+templateUri="${baseUri}/${module}/azuredeploy.json"
+
 # Define paths to the ARM template and parameters file
-#templateFile="azuredeploy.json"
 parametersFile="azuredeploy.parameters.json"
-templateUri="https://raw.githubusercontent.com/marcjimz/azure-dai-infra/main/synapse/azuredeploy.json"
 
 # Usage function
 usage() {
-    echo "Usage: $0 key1=value1 key2=value2 ... keyN=valueN"
-    echo "Example: $0 ResourceFolder=/path/to/folder SubscriptionId=example-id ResourceGroupName=my-group"
+    echo "Usage: $0 <module> key1=value1 key2=value2 ... keyN=valueN"
+    echo "Example: $0 synapse ResourceFolder=/path/to/folder SubscriptionId=example-id ResourceGroupName=my-group"
     exit 1
 }
 
@@ -22,6 +33,9 @@ for util in jq az sed; do
         exit 1
     fi
 done
+
+# Shift the first argument since it's the module
+shift
 
 # Parse command line arguments
 for arg in "$@"; do
@@ -86,7 +100,7 @@ esac
 
 # Deploy the ARM template with the modified parameters
 az deployment group create \
-    --name exampleDeployment \
+    --name deployment2$module \
     --resource-group ${params[ResourceGroupName]} \
     --template-uri  $templateUri \
     --parameters @$tempParametersFile
